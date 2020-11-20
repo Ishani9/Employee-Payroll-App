@@ -1,6 +1,7 @@
 
 // JS UC 2
 // Validating name and adding eventlistener for salary
+
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector("#name");
     const textError = document.querySelector(".text-error");
@@ -24,17 +25,34 @@ window.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
-//UC 3
 const save = () => {
     try {
+        alert("HELLO")
         let empPayrollData = createEmployeePayroll();
         alert(empPayrollData.toString());
+        createAndUpdateStorage(empPayrollData);
     }
     catch (e) {
         return;
     }
 }
 
+//UC4: Storing in local storage
+function createAndUpdateStorage(employeePayrollData) {
+    //localStorage.clear(); this can be used to clear all records from localStorage
+    let employeePayrollList = JSON.parse(localStorage.getItem("EmployeePayrollList"));
+
+    if (employeePayrollList != undefined) {
+        employeePayrollList.push(employeePayrollData);
+    }
+    else {
+        employeePayrollList = [employeePayrollData];
+    }
+    alert(employeePayrollList.toString());
+    localStorage.setItem("EmployeePayrollList", JSON.stringify(employeePayrollList));
+}
+
+//UC3: Create Employee payroll object
 const createEmployeePayroll = () => {
     let employeePayrollData = new EmployeePayrollData();
     try {
@@ -59,11 +77,11 @@ const getInputValueById = (id) => {
     let value = document.querySelector(id).value;
     return value;
 }
-/*
+
 const getInputElementValue = (id) => {
     let value = document.getElementById(id).value;
     return value;
-}*/
+}
 
 const getSelectedValues = (propertValue) => {
     let allItems = document.querySelectorAll(propertValue);
@@ -73,4 +91,3 @@ const getSelectedValues = (propertValue) => {
     });
     return selectedItems;
 }
-
